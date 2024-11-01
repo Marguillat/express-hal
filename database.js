@@ -45,4 +45,4 @@ const users = [
     new User(103, 'MikeBrown', false)
 ]
 
-module.exports = {concerts}
+module.exports = {concerts,reservations}

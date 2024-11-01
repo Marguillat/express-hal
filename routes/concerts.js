@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const reservationRouter = require('./reservation')
+const reservationRouter = require('./reservations')
 let {concerts} = require('../database')
 let hal = require('../hal')
 
@@ -14,7 +14,6 @@ router
     })
     // .post('/concerts',(req,res,next)=>{
     //     console.log(req.body);
-        
     // })
     .get('/concerts/:id(\\d+)',(req,res,next)=>{
         //définit id params

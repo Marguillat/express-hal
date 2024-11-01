@@ -48,10 +48,9 @@ function mapConcertoResourceObject(concertData, baseURL) {
 
 
 function mapConcertListToResourecObject(concertData){
+
     // préparer les concerts embarqués
-
     const _embedded = concertData.map((concert)=>mapConcertoResourceObject(concert))
-
 
 
     // liste des concerts à venir
@@ -67,4 +66,23 @@ function mapConcertListToResourecObject(concertData){
     }
 }
 
-module.exports = { halLinkObject, mapConcertoResourceObject,mapConcertListToResourecObject };
+/**
+ * Retourne une représentation Ressource Object (HAL) d'une reservation
+ * @param {*} resaData Données brutes d'un concert
+ * @returns un Ressource Object Concert (spec HAL)
+ */
+function mapResaToResourceObject(resaData) {
+    return {
+        "_links": {
+            // A compléter
+            "self": halLinkObject(`/concerts/${resaData.id_concert}/reservations/${resaData.id}`),
+            "concerts": halLinkObject('concerts'),
+            // "reservation": halLinkObject(...)
+        },
+        //Données d'un concert à ajouter ici...
+        status: resaData.status
+    }
+}
+
+
+module.exports = { halLinkObject, mapConcertoResourceObject,mapConcertListToResourecObject,mapResaToResourceObject };
