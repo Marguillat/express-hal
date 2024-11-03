@@ -34,7 +34,7 @@ function mapConcertoResourceObject(concertData, baseURL) {
         "_links": {
             // A compléter
             "self": halLinkObject(`/concerts/${concertData.id}`),
-            "concerts": halLinkObject('concerts'),
+            "concerts": halLinkObject('/concerts'),
             "book": halLinkObject(`/concerts/${concertData.id}/reservations`)
             // "reservation": halLinkObject(...)
         },
@@ -76,13 +76,34 @@ function mapResaToResourceObject(resaData) {
         "_links": {
             // A compléter
             "self": halLinkObject(`/concerts/${resaData.id_concert}/reservations/${resaData.id}`),
-            "concerts": halLinkObject('concerts'),
+            "concerts": halLinkObject('/concerts'),
             // "reservation": halLinkObject(...)
         },
         //Données d'un concert à ajouter ici...
-        status: resaData.status
+        status: resaData.status,
+        user: resaData.id_user
+    }
+}
+
+function mapResaListToResourceObject(resaListData,idConcert) {
+    const _embedded = resaListData.map((resa)=> mapResaToResourceObject(resa))
+
+    return {
+        "_links": {
+            "self": halLinkObject(`/concerts/${idConcert}/reservations/`),
+            "thisConcert":halLinkObject(`/concerts/${idConcert}`),
+            "concerts": halLinkObject('/concerts'),
+        },
+        "_embeded":{
+            "reservations": _embedded
+        }
     }
 }
 
 
-module.exports = { halLinkObject, mapConcertoResourceObject,mapConcertListToResourecObject,mapResaToResourceObject };
+module.exports = { 
+    halLinkObject, 
+    mapConcertoResourceObject,
+    mapConcertListToResourecObject,
+    mapResaToResourceObject,
+    mapResaListToResourceObject };
