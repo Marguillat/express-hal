@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt')
+
 // Les modèles--------------------------------------------------
 class Concert{
     constructor(id, date_concert, artist_name, location_concert, number_seats) {
@@ -19,9 +21,10 @@ class Reservation{
 }
 
 class User{
-    constructor(id,pseudo,is_admin){
+    constructor(id,pseudo,password='',is_admin = false){
         this.id = id;
         this.pseudo = pseudo
+        this.password= bcrypt.hashSync(password,5)
         this.is_admin = is_admin
     }
 }
@@ -40,9 +43,7 @@ const reservations = [
 ]
 
 const users = [
-    new User(101, 'JohnDoe', false),
-    new User(102, 'JaneSmith', true),
-    new User(103, 'MikeBrown', false)
+    new User(102, 'foo', 'barr', true),
 ]
 
-module.exports = {concerts,reservations}
+module.exports = {concerts,reservations,users}

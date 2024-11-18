@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const {reservations} = require('../database')
 const hal = require('../hal')
+const {checkTokenMiddleware} = require('../jwt')
 
 router
     .get('/:idConcert(\\d+)/reservations/:idResa(\\d+)',(req,res)=>{
@@ -15,14 +16,14 @@ router
         let resaResourceObject = hal.mapResaToResourceObject(reservation)
         res.send(resaResourceObject)
     })
-    .get('/:idConcert(\\d+)/reservations', (req,res)=>{
+    .get('/:idConcert(\\d+)/reservations', checkTokenMiddleware ,(req,res)=>{
         let reservationsList = reservations.filter((resa)=>(resa.id_concert == req.params.idConcert))
 
         if (!reservationsList) {
             res.status(404).json({})
         }
 
-        let reservationsListHall = hal.mapResaListToResourceObject(reservationsList)
+        let reservationsListHall = hal.mapResaListToResourceObject(reservationsList,req.params.idConcert)
         res.send(reservationsListHall)
     })
 
